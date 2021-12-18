@@ -55,7 +55,7 @@ def spin():
     nav.c.rotate_bezel(angle)
     nav.c.draw_clue_vector(360 - angle, angle)
     angle = (angle + 1) % 360
-    root.after(200, spin)
+    root.after(500, spin)
 
 
 spin()
