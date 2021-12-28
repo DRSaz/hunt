@@ -127,21 +127,21 @@ class Navigation_Widgets:
         self.fields[self.focus_field].highlight()
         self.set_graph_view()
 
-    def process_cw_event(self):
-        if self.modes[self.mode]["state"] == "Side_Entry":
-            self.toggle_side()
+    def process_encoder_move_event(self,value,direction):
+        if direction == "L":
+            if self.modes[self.mode]["state"] == "Side_Entry":
+                self.toggle_side()
+            else:
+                self.active_fields = self.all_fields
+                self.select_field(self.focus_field, "next")
         else:
-            self.active_fields = self.all_fields
-            self.select_field(self.focus_field, "next")
+            if self.modes[self.mode]["state"] == "Side_Entry":
+                self.toggle_side()
+            else:
+                self.active_fields = self.all_fields
+                self.select_field(self.focus_field, "previous")
 
-    def process_ccw_event(self):
-        if self.modes[self.mode]["state"] == "Side_Entry":
-            self.toggle_side()
-        else:
-            self.active_fields = self.all_fields
-            self.select_field(self.focus_field, "previous")
-
-    def process_button_event(self):
+    def process_button_event(self,event):
         if self.modes[self.mode]["state"] == "Side_Entry":
             self.clear_circles()
             self.modes[self.mode]["state"] = "Ready"

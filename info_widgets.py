@@ -58,9 +58,12 @@ class Timer_Widget(Time_Display_Widget):
         self.start_time = time.time()
         self.update()
 
+    def elapsed_time(self):
+        return time.time()-self.start_time
+
     def update(self):
-        elapsed_time = time.time() - self.start_time
-        self.set_time(self.start_value + (elapsed_time * self.direction))
+ 
+        self.set_time(self.start_value + (self.elapsed_time() * self.direction))
         self.widget.after(TIMER_REFRESH, self.update)
 
 

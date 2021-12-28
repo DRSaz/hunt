@@ -38,9 +38,8 @@ class Clue_Data:
         if c <= 0:
             self.average_time.set_time(0)
         else:
-            elapsed_time = TOTAL_HUNT_TIME - self.hunt_timer.counter
             penalty_time = e * EMERGENCY_PENALTY
-            t = int((elapsed_time + penalty_time) / c)
+            t = int((self.hunt_timer.elapsed_time() + penalty_time) / c)
             self.average_time.set_time(t)
 
 
@@ -67,12 +66,23 @@ class Clue_Widgets:
                 fg=STATUS_COLORS[self.data.get_status(c)],
             )
             self.fields[c].grid(row=0, column=CLUE_LETTERS.index(c), pady=PADY)
+
+            def select(event, self=self, c=c):
+                self.__select(event, c)
+
+            self.fields[c].bind("<Enter>", select)
         self.mode = "selection"
         self.selected = CLUE_LETTERS[0]
         self.highlight_selected()
 
     def update_status_color(self):
         self.fields[self.selected].config(fg=STATUS_COLORS[self.new_status])
+
+    def __select(self, event, new_selection):
+        self.unhighlight_selected()
+        self.selected = new_selection
+        print(new_selection)
+        self.highlight_selected()
 
     def select_next(self):
         self.unhighlight_selected()
@@ -130,22 +140,22 @@ class Clue_Widgets:
         self.selected = select_item(self.selected, CLUE_LETTERS, "next")
         self.highlight_selected()
 
-    def process_button_event(self):
+    def process_button_event(self, event):
         if self.mode == "selection":
             self.enter_edit_mode()
         else:
             self.exit_edit_mode()
 
-    def process_cw_event(self):
-        if self.mode == "selection":
-            self.select_next()
+    def process_encoder_move_event(self, value, direction):
+        if direction == "R":
+            if self.mode == "selection":
+                self.select_next()
+            else:
+                self.new_status = select_item(self.new_status, CLUE_STATUS, "next")
+                self.update_status_color()
         else:
-            self.new_status = select_item(self.new_status, CLUE_STATUS, "next")
-            self.update_status_color()
-
-    def process_ccw_event(self):
-        if self.mode == "selection":
-            self.select_previous()
-        else:
-            self.new_status = select_item(self.new_status, CLUE_STATUS, "previous")
-            self.update_status_color()
+            if self.mode == "selection":
+                self.select_previous()
+            else:
+                self.new_status = select_item(self.new_status, CLUE_STATUS, "previous")
+                self.update_status_color()

@@ -1,4 +1,5 @@
 import math
+import sys
 
 
 def select_item(current_item, the_list, direction):
@@ -16,46 +17,8 @@ def select_item(current_item, the_list, direction):
     return the_list[new_index]
 
 
-class Encoder_Toggle:
-    def __init__(self, ws, encoders):
-        self.toggle = 0
-        self.encoders = encoders
-        self.encoders[self.toggle].enable()
-        ws.bind("<Up>", self.encoder_toggle)
-
-    def encoder_toggle(self, event):
-        self.encoders[self.toggle].disable()
-        self.toggle += 1
-        if self.toggle >= len(self.encoders):
-            self.toggle = 0
-        self.encoders[self.toggle].enable()
 
 
-class Encoder:
-    def __init__(self, ws, cw_action, ccw_action, button_action):
-        self.cw_action = cw_action
-        self.ccw_action = ccw_action
-        self.buttun_action = button_action
-        self.ws = ws
-
-    def cw_event(self, event):
-        self.cw_action()
-
-    def ccw_event(self, event):
-        self.ccw_action()
-
-    def button_event(self, event):
-        self.buttun_action()
-
-    def enable(self):
-        self.ws.bind("<Left>", self.ccw_event)
-        self.ws.bind("<Right>", self.cw_event)
-        self.ws.bind("<Down>", self.button_event)
-
-    def disable(self):
-        self.ws.unbind("<Left>")
-        self.ws.unbind("<Right>")
-        self.ws.unbind("<Down>")
 
 
 def distance(p0, p1):
@@ -78,7 +41,9 @@ class Input_Buffer:
         ws.bind("<Key>", self.process_key)
 
     def process_key(self, event):
-        if event.keysym == "Return":
+        if event.keysym =="q":
+            sys.exit()
+        elif event.keysym == "Return":
             self.callback(self.buffer)
             self.buffer = ""
         elif event.keysym == "slash":

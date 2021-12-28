@@ -1,6 +1,7 @@
 import math
 from tkinter import LAST
 from config import *
+from HMC883L import hmc5883l
 
 
 class Compass:
@@ -14,6 +15,16 @@ class Compass:
             "clue_distance": 0,
         }
         self.create_dial()
+        self.compass = hmc5883l()
+        self.heading = 0
+        self.update_compass()
+
+    def update_compass(self):
+        heading = self.compass.heading()
+        if heading != self.heading:
+            self.heading = heading
+            self.rotate_bezel(self.heading)
+        self.canvas.after(COMPASS_DISPLAY_PERIOD, self.update_compass)
 
     def coords(self, p):
         (x, y) = p
@@ -48,6 +59,12 @@ class Compass:
         self.create_clue_vector()
 
     def rotate_bezel(self, angle):
+        for m in self.bezel_marks:
+            self.canvas.delete(m)
+        self.bezel_marks.clear()
+        for m in range(0, 360, 5):
+            major_mark = m % 15 == 0
+            self.bezel_marks.append(self.bezel_tick(angle + m, major_mark))
         for l in self.bezel_labels:
             self.canvas.delete(l)
         self.bezel_labels.clear()
@@ -55,12 +72,6 @@ class Compass:
         self.bezel_labels.append(self.bezel_text("E", angle + 90))
         self.bezel_labels.append(self.bezel_text("S", angle + 180))
         self.bezel_labels.append(self.bezel_text("W", angle + 270))
-        for m in self.bezel_marks:
-            self.canvas.delete(m)
-        self.bezel_marks.clear()
-        for m in range(0, 360, 5):
-            major_mark = m % 15 == 0
-            self.bezel_marks.append(self.bezel_tick(angle + m, major_mark))
 
     def bezel_text(self, text, angle):
         angle_r = math.radians(angle)
@@ -68,7 +79,10 @@ class Compass:
             BEZEL_RADIUS * math.sin(angle_r),
             BEZEL_RADIUS * math.cos(angle_r),
         )
-        id = self.canvas.create_text(*self.coords(p), text=text, angle=-angle)
+        id = self.canvas.create_text(
+            *self.coords(p), text=text, angle=-angle, fill="white"
+        )
+        # id = self.canvas.create_text(*self.coords(p), text=text, fill="white")
         return id
 
     def bezel_tick(self, angle, major_mark):
