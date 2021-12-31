@@ -12,7 +12,7 @@ class Clue_Data:
             self.data = json.load(f)
         self.hunt_timer = Timer_Widget(ws, "Hunt Timer", "count_down", TOTAL_HUNT_TIME)
         self.clue_timer = Timer_Widget(ws, "Clue Timer", "count_up", 0)
-        self.clue_credits = Number_Widget(ws, "Solved", INFO_TEXT_COLOR, INFO_WIDTH)
+        self.clue_credits = Number_Widget(ws, "Solved Credits", INFO_TEXT_COLOR, INFO_WIDTH)
         self.emergencies = Number_Widget(ws, "Emergencies", INFO_TEXT_COLOR, INFO_WIDTH)
         self.average_time = Time_Display_Widget(ws, "Average Time")
 

@@ -2,7 +2,7 @@ import tkinter as tk
 import RPi.GPIO as GPIO
 from config import *
 from info_widgets import *
-from clue_widgets import *
+from clue_widgets_touch import *
 from nav_widgets import *
 from gps import GPS
 import encoder
@@ -37,18 +37,6 @@ nav.canvas.grid(row=1, column=0, columnspan=4, rowspan=4, padx=PADX, pady=PADY)
 # Clue Status Row
 clues.frame.grid(row=5, column=0, columnspan=5, padx=PADX)
 
-# Setup the rotoray encoders and buttons for menu selection input.
-GPIO.setmode(GPIO.BCM)
-clue_encoder = encoder.Encoder(7, 25, clues.process_encoder_move_event)
-GPIO.setup(8, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-clue_button = GPIO.add_event_detect(
-    8, GPIO.FALLING, callback=clues.process_button_event, bouncetime=300
-)
-nav_encoder = encoder.Encoder(23, 18, nav.process_encoder_move_event)
-GPIO.setup(24, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-nav_button = GPIO.add_event_detect(
-    24, GPIO.FALLING, callback=nav.process_button_event, bouncetime=300
-)
 
 angle = 0
 clues.data.hunt_timer.start()
@@ -59,7 +47,7 @@ def gps_callback():
     print(gps.get_location())
 
 
-gps = GPS(gps_callback)
+# gps = GPS(gps_callback)
 
 
 def spin():
@@ -72,4 +60,4 @@ def spin():
 spin()
 
 root.mainloop()
-GPIO.cleanup()
+# GPIO.cleanup()

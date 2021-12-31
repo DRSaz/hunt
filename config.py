@@ -8,13 +8,12 @@ TOTAL_HUNT_TIME = 5 * HOUR + 15 * MINUTE
 TIMER_REFRESH = 250
 
 CLUE_LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-CLUE_STATUS = ["Not Found", "Solved", "Emergency", "Half Credit", "Parked"]
+CLUE_STATUS = ["Not Found", "Solved", "Emergency", "Half Credit"]
 STATUS_COLORS = {
     "Not Found": "grey",
     "Solved": "green",
     "Emergency": "yellow",
-    "Half Credit": "orange",
-    "Parked": "blue",
+    "Half Credit": "medium turquoise",
 }
 
 UNSPECIFIED = "--"
