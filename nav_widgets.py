@@ -82,7 +82,7 @@ class Navigation_Widgets:
             self.objects_visible[l] = False
             self.g.set_color(self.objects[l], DEFAULT_LINE_COLOR)
             self.fields[l] = Number_Entry_Widget(
-                ws, l, "yd", ENTRY_TEXT_COLOR, INFO_WIDTH
+                ws, l, "yd", SELECTABLE_COLOR, INFO_WIDTH
             )
             self.fields[l].widget.config(text=UNSPECIFIED)
         for p in self.points:

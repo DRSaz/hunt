@@ -20,10 +20,8 @@ class Graph:
     def graph_scale(self, v):
         return self.scale * v
 
-    def create_point(self, p, label, color="white"):
-        return self.canvas.create_text(
-            *self.graph_coords(p), text=label, state="hidden",fill=color
-        )
+    def create_point(self, p, label):
+        self.canvas.create_text(*self.graph_coords(p), text=label)
 
     def create_line(self, p1, p2):
         return self.canvas.create_line(
@@ -37,7 +35,11 @@ class Graph:
             x - r, y - r, x + r, y + r, outline=outline, dash=(5, 3), state="hidden"
         )
 
-    def plot_point(self, id, p,):
+    def plot_point(
+        self,
+        id,
+        p,
+    ):
         self.canvas.coords(id, *self.graph_coords(p))
 
     def plot_line(self, id, p1, p2):

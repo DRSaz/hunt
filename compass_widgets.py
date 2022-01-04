@@ -68,19 +68,19 @@ class Compass:
         for l in self.bezel_labels:
             self.canvas.delete(l)
         self.bezel_labels.clear()
-        self.bezel_labels.append(self.bezel_text("N", angle + 0))
+        self.bezel_labels.append(self.bezel_text("N", angle + 0, "red"))
         self.bezel_labels.append(self.bezel_text("E", angle + 90))
         self.bezel_labels.append(self.bezel_text("S", angle + 180))
         self.bezel_labels.append(self.bezel_text("W", angle + 270))
 
-    def bezel_text(self, text, angle):
+    def bezel_text(self, text, angle, color="white"):
         angle_r = math.radians(angle)
         p = (
             BEZEL_RADIUS * math.sin(angle_r),
             BEZEL_RADIUS * math.cos(angle_r),
         )
         id = self.canvas.create_text(
-            *self.coords(p), text=text, angle=-angle, fill="white"
+            *self.coords(p), text=text, angle=-angle, fill=color
         )
         # id = self.canvas.create_text(*self.coords(p), text=text, fill="white")
         return id

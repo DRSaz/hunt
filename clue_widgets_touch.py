@@ -13,39 +13,35 @@ class Clue_Data:
             self.data = json.load(f)
         self.hunt_timer = Timer_Widget(ws, "Hunt Timer", "count_down", TOTAL_HUNT_TIME)
         self.clue_timer = Timer_Widget(ws, "Clue Timer", "count_up", 0)
-        self.clue_credits = Number_Widget(
-            ws, "Clue Credits", INFO_TEXT_COLOR, INFO_WIDTH
-        )
-        self.emergencies = Number_Widget(ws, "Emergencies", INFO_TEXT_COLOR, INFO_WIDTH)
+        self.clue_credits = Number_Widget(ws, "Clue Credits")
+        self.emergencies = Number_Widget(ws, "Emergencies")
         self.average_time = Time_Display_Widget(ws, "Average Time")
         self.prev_clue_elapsed_time = 0
         self.first_clue_credit = 0
 
-        self.menu = tk.Menu(ws, tearoff=False, background="grey")
+        self.menu = tk.Menu(
+            ws, tearoff=False, background="grey", font=("helvetica", INFO_TEXT_SIZE)
+        )
         self.menu.add_command(
             label="Start Next Clue",
             command=lambda: self.assume_solved(),
-            font=("helvetica", INFO_TEXT_SIZE),
         )
         self.menu.add_command(
             label="Resume Previous Clue",
             command=lambda: self.resume_clue(),
-            font=("helvetica", INFO_TEXT_SIZE),
         )
         self.menu.add_command(
             label="First Clue Credit",
             command=lambda: self.set_first_clue_credit(),
-            font=("helvetica", INFO_TEXT_SIZE),
         )
         self.menu.add_command(
-            label="Cancel",
+            label="Quit",
             command=lambda: self.cancel(),
-            font=("helvetica", INFO_TEXT_SIZE),
         )
         self.clue_timer.frame.bind("<Enter>", self.show_site_menu)
 
     def cancel(self):
-        pass
+        quit()
 
     def set_first_clue_credit(self):
         if self.first_clue_credit == 0:
@@ -108,7 +104,7 @@ class Clue_Widgets:
             text=label,
             font=(FONT, LABEL_TEXT_SIZE),
             bg=MAIN_BG,
-            fg=LABEL_TEXT_COLOR,
+            fg=LABEL_COLOR,
             relief=FRAME,
             bd=BD_SIZE,
             labelanchor="n",
@@ -132,7 +128,11 @@ class Clue_Widgets:
             self.fields[c].bind("<Enter>", select)
 
         self.active_clue = "A"
-        self.menu = tk.Menu(ws, tearoff=False, background="grey")
+        self.menu = tk.Menu(
+            ws,
+            tearoff=False,
+            background="grey",
+        )
         self.menu.add_command(
             label="Solved",
             command=lambda: self.set_clue_status("Solved"),
@@ -176,4 +176,5 @@ class Clue_Widgets:
         parse = geom.split("+")
         x_offset = int(parse[1]) + 225
         y_offset = int(parse[2]) + 150
+
         self.menu.tk_popup(x_offset, y_offset)
